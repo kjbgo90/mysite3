@@ -4,5 +4,65 @@
 <mapper namespace="board">
 	
 	<!-- 쿼리문 작성 -->
-
+	<select id="selectlist" resultType="BoardVo">
+		<![CDATA[
+			SELECT   b.no as no, 
+	        		 b.title as title, 
+	        		 u.name as name, 
+	        		 b.hit as hit, 
+	        		 TO_CHAR(b.reg_date, 'YYYY-MM-DD') as reg_date, 
+	        		 b.user_no as user_no
+			FROM board b JOIN users u
+	    		ON   b.user_no = u.no
+			ORDER BY no DESC
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="BoardVo">
+		<![CDATA[
+			INSERT INTO board
+			VALUES   (seq_board_no.nextval,
+       				 #{title},
+        			 #{content},
+        			 DEFAULT,
+       				 SYSDATE,
+        			 #{user_no} )
+		]]>
+	</insert>
+	
+	<update id="updatehit" parameterType="int">
+		<![CDATA[
+			UPDATE 	 board 
+			SET 	 hit = hit + 1 
+			WHERE 	 no = #{no}
+		]]>
+	</update>
+	
+	<select id="selectboard" parameterType="int" resultType="BoardVo">
+		<![CDATA[
+			SELECT   title, 
+					 content, 
+					 user_no, 
+					 no 
+			FROM     board 
+			WHERE    no = #{no}
+		]]>
+	</select>
+	
+	<update id="update" parameterType="BoardVo">
+		<![CDATA[
+			UPDATE   board
+			SET 	 title = #{title},
+    				 content = #{content}
+			WHERE 	 no = #{no}
+		]]>
+	</update>
+	
+	
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE FROM board
+			WHERE NO = #{no}
+		]]>
+	</delete>
 </mapper>

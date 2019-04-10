@@ -25,7 +25,7 @@
 					<p class="form-box">
 						회원가입을 축하합니다.
 						<br><br>
-						<a href="/WEB-INF/views/user/loginform.jsp">로그인하기</a>
+						<a href="${pageContext.request.contextPath }/user/loginform">로그인하기</a>
 					</p>
 					
 				</div><!-- /user -->
