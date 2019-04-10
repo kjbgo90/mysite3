@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.javaex.dao.GuestBookDao;
+import com.javaex.service.GuestBookService;
 import com.javaex.vo.GuestBookVo;
 
 @Controller
@@ -19,12 +19,12 @@ import com.javaex.vo.GuestBookVo;
 public class GuestBookController {
 	
 	@Autowired
-	private GuestBookDao dao;
+	private GuestBookService guestbookService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String addList(Model model) {
 		System.out.println("guestbook/addlst (guestbook main) 호출");
-		List<GuestBookVo> list =  dao.getList();
+		List<GuestBookVo> list = guestbookService.getList();
 		model.addAttribute("list", list);
 		
 		return "guestbook/addlst";
@@ -40,16 +40,29 @@ public class GuestBookController {
 	public String deleteGuest(@PathVariable("no") int no, 
 							  @RequestParam("password") String password) {
 		System.out.println("guestbook/delete 실행");
-		dao.delete(new GuestBookVo(no, password));
-		
-		return "redirect:/guestbook";
+		int result = guestbookService.delete(new GuestBookVo(no, password));
+		if (result == 1) {
+			System.out.println("delete 성공!");
+			return "redirect:/guestbook";
+		}
+		else {
+			System.out.println("delete 실패..");
+			return "main/index";
+		}
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insert(@ModelAttribute GuestBookVo vo) {
 		System.out.println("guestbook/insert 실행");
-		dao.insert(vo);
-		return "redirect:/guestbook";
+		int result = guestbookService.insert(vo);
+		if (result == 1) {
+			System.out.println("insert 성공!");
+			return "redirect:/guestbook";
+		}
+		else {
+			System.out.println("insert 실패..");
+			return "main/index";
+		}
 	}
 	
 }

@@ -25,8 +25,18 @@
 					<form method="post" action="${pageContext.request.contextPath}/guestbook/insert">
 						<table border="1" width="510">
 							<tr>
-								<td>이름</td>
-								<td><input type="text" name="name" value=""></td>
+								<c:choose>
+									<c:when test="${empty authUser}">
+										<!-- 로그인 전 -->
+										<td>이름</td>
+										<td><input type="text" name="name" value=""></td>
+									</c:when>
+									<c:otherwise>
+										<!-- 로그인 후 -->
+										<td>이름</td>
+										<td><input type="text" name="name" value="${authUser.name}"></td>
+									</c:otherwise>
+								</c:choose>
 								<td>비밀번호</td>
 								<td><input type="password" name="password" value=""></td>
 							</tr>	
