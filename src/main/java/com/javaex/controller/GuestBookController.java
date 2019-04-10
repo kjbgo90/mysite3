@@ -23,7 +23,7 @@ public class GuestBookController {
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String addList(Model model) {
-		System.out.println("guestbook/addlst 호출");
+		System.out.println("guestbook/addlst (guestbook main) 호출");
 		List<GuestBookVo> list =  dao.getList();
 		model.addAttribute("list", list);
 		
@@ -32,13 +32,14 @@ public class GuestBookController {
 	
 	@RequestMapping(value = "/deleteform", method = RequestMethod.GET)
 	public String deleteForm() {
-		
+		System.out.println("guestbook/deleteform 호출");
 		return "guestbook/deleteform";
 	}
 	
 	@RequestMapping(value = "/delete/{no}", method = RequestMethod.POST)
 	public String deleteGuest(@PathVariable("no") int no, 
 							  @RequestParam("password") String password) {
+		System.out.println("guestbook/delete 실행");
 		dao.delete(new GuestBookVo(no, password));
 		
 		return "redirect:/guestbook";
@@ -46,8 +47,8 @@ public class GuestBookController {
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insert(@ModelAttribute GuestBookVo vo) {
+		System.out.println("guestbook/insert 실행");
 		dao.insert(vo);
-//		dao.insertMap(vo);
 		return "redirect:/guestbook";
 	}
 	

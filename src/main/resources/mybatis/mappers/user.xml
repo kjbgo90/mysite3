@@ -4,5 +4,45 @@
 <mapper namespace="user">
 	
 	<!-- 쿼리문 작성 -->
-
+	<insert id="insertUser" parameterType="UserVo">
+		<![CDATA[
+			INSERT INTO users
+			VALUES ( 	seq_users_no.nextval
+        				, #{name}
+        				, #{email}
+        				, #{password}
+        				, #{gender} )
+		]]>
+	</insert>
+	
+	<select id="selectUser" parameterType="map" resultType="UserVo">
+		<![CDATA[
+			SELECT  no,
+        			name
+			FROM users
+			WHERE   email = #{email}
+    			AND password = #{password}
+		]]>
+	</select>
+	<select id="selectModi" parameterType="UserVo" resultType="UserVo">
+		<![CDATA[
+			SELECT  no,
+        			name,
+        			email,
+        			gender
+			FROM users
+			WHERE   no = #{no}
+		]]>
+	</select>
+	
+	<update id="update" parameterType="UserVo">
+		<![CDATA[
+			UPDATE users 
+			SET	   name = #{name}, 
+				   password = #{password}, 
+				   gender = #{gender} 
+			WHERE 
+				   no = #{no}
+		]]>
+	</update>
 </mapper>

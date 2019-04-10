@@ -37,7 +37,7 @@
 					</p>
 					
 					<div id="goGuestbook">
-						<a  href="${pageContext.request.contextPath }/guestbook?action=addlst">방명록</a>에 글 남기기
+						<a  href="${pageContext.request.contextPath }/guestbook">방명록</a>에 글 남기기
 					</div>
 				</div><!-- /main -->
 			</div><!-- /c_box -->
