@@ -40,7 +40,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board">글목록</a>
+						<a href="${pageContext.request.contextPath }/board/?page=${page}&kwd=${kwd}">글목록</a>
 					
 						<c:if test="${readVo.user_no eq authUser.no}">
 							<a href="${pageContext.request.contextPath }/board/modifyform/${readVo.no}">

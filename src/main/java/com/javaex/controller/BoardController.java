@@ -1,6 +1,6 @@
 package com.javaex.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,12 +24,13 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String boardList(Model model) {
+	@RequestMapping(value = {"", "/list"}, method = RequestMethod.GET)
+	public String boardList(Model model,
+							@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+							@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd) {
 		System.out.println("boardlist 호출");
-		
-		List<BoardVo> list = boardService.getBoardList();
-		model.addAttribute("boardlist", list);
+		Map<String, Object> map = boardService.getBoardList(page, kwd);
+		model.addAttribute("pageMap", map);
 		
 		return "board/list";
 	}
@@ -51,15 +52,19 @@ public class BoardController {
 		else 
 			System.out.println("write 실패..");
 		
-		return "redirect:/board";
+		return "redirect:/board?page=1";
 	}
 	
 	@RequestMapping(value = "/read/{no}", method = RequestMethod.GET)
 	public String read(@PathVariable("no") int no,
+					   @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+					   @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
 	 				   Model model) {
 		System.out.println("read 실행");
 		BoardVo vo = boardService.readBoard(no);
-		model.addAttribute("readVo", vo);		
+		model.addAttribute("readVo", vo);
+		model.addAttribute("page", page);
+		model.addAttribute("kwd", kwd);
 		return "board/read";
 	}
 	
@@ -100,7 +105,7 @@ public class BoardController {
 			int result = boardService.deleteCon(no);
 			
 			if(result == 1)
-				return "redirect:/board";
+				return "redirect:/board?page=1";
 			else
 				return "redirect:/main";
 		}
@@ -119,8 +124,14 @@ public class BoardController {
 		int result = boardService.deleteServ(no, write_no, auth_no);
 		
 		if(result == 1)
-			return "redirect:/board";
+			return "redirect:/board?page=1&kwd=";
 		else
 			return "redirect:/main";
+	}
+	
+	@RequestMapping(value = "/board/board" , method = RequestMethod.GET)
+	public String insert1000() {
+		boardService.insert1000();
+		return "redirect:/main";
 	}
 }

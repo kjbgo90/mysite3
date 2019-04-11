@@ -4,17 +4,22 @@
 <mapper namespace="board">
 	
 	<!-- 쿼리문 작성 -->
-	<select id="selectlist" resultType="BoardVo">
+	<select id="selectlist" parameterType="map" resultType="BoardVo">
 		<![CDATA[
-			SELECT   b.no as no, 
-	        		 b.title as title, 
-	        		 u.name as name, 
-	        		 b.hit as hit, 
-	        		 TO_CHAR(b.reg_date, 'YYYY-MM-DD') as reg_date, 
-	        		 b.user_no as user_no
-			FROM board b JOIN users u
-	    		ON   b.user_no = u.no
-			ORDER BY no DESC
+			SELECT rn, no, title, name, hit, reg_date, user_no
+			FROM    (SELECT  ROWNUM as rn,
+			             	 X.*
+			    	 FROM    (SELECT  b.no as no, 
+			                     	  b.title as title, 
+			                     	  u.name as name, 
+			                     	  b.hit as hit, 
+			                     	  TO_CHAR(b.reg_date, 'YYYY-MM-DD') as reg_date, 
+			                     	  b.user_no as user_no
+			            	  FROM board b JOIN users u
+			                	ON 	  b.user_no = u.no
+			            	  WHERE UPPER(title) LIKE '%' || NVL(UPPER(#{kwd}), '') || '%'
+			            	  ORDER BY no DESC) X)
+			WHERE rn > #{start} AND rn <= #{end}
 		]]>
 	</select>
 	
@@ -65,4 +70,12 @@
 			WHERE NO = #{no}
 		]]>
 	</delete>
+	
+	<select id="totalCount" resultType="int" parameterType="String">
+		<![CDATA[
+			SELECT count(*)
+			FROM   board
+			WHERE  UPPER(title) LIKE '%' || NVL(UPPER(#{kwd}), '') || '%'
+		]]>
+	</select>
 </mapper>

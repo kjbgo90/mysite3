@@ -22,8 +22,9 @@
 				<div id="board">
 					<h2>게시판-리스트</h2>
 					
-					<form action="" method="post">
-						<input type="text" id="kwd" name="kwd" value="">
+					<form action="${pageContext.request.contextPath }/board" method="get">
+						<input type="hidden" name="page" value="1" >
+						<input type="text" id="kwd" name="kwd" value="${param.kwd }" >
 						<input type="submit" value="찾기">
 					</form>
 					
@@ -36,10 +37,10 @@
 							<th>작성일</th>
 							<th>&nbsp;</th>
 						</tr>
-						<c:forEach items="${boardlist }" var="vo" varStatus="status">				
+						<c:forEach items="${pageMap.boardList }" var="vo" >				
 						<tr>
-							<td>${status.count }</td>
-							<td><a href="${pageContext.request.contextPath }/board/read/${vo.no }">${vo.title }</a></td>
+							<td>${vo.no }</td>
+							<td><a href="${pageContext.request.contextPath }/board/read/${vo.no }?page=${param.page}&kwd=${param.kwd}">${vo.title }</a></td>
 							<td>${vo.name }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.reg_date }</td>
@@ -60,18 +61,24 @@
 					</table>
 					<div class="pager">
 						<ul>
-							<li><a href="">◀</a></li>
-							<li><a href="">1</a></li>
-							<li><a href="">2</a></li>
-							<li class="selected">3</li>
-							<li><a href="">4</a></li>
-							<li><a href="">5</a></li>
-							<li><a href="">6</a></li>
-							<li><a href="">7</a></li>
-							<li><a href="">8</a></li>
-							<li><a href="">9</a></li>
-							<li><a href="">10</a></li>
-							<li><a href="">▶</a></li>
+							<c:if test="${pageMap.prev eq true }">
+								<li><a href="${pageContext.request.contextPath }/board?page=${pageMap.startPageBtnNo - 1 }&kwd=${param.kwd}">◀</a></li>
+							</c:if>
+							
+							<c:forEach var ="i" begin="${pageMap.startPageBtnNo }" end="${pageMap.endPageBtnNo }" step="1">
+								<c:choose>
+									<c:when test="${param.page eq i }">
+										<li class="selected">${i}</li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/board?page=${i }&kwd=${param.kwd}">${i}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+
+							<c:if test="${pageMap.next eq true }">
+								<li><a href="${pageContext.request.contextPath }/board?page=${pageMap.endPageBtnNo + 1 }&kwd=${param.kwd}">▶</a></li>
+							</c:if>
 						</ul>
 					</div>				
 					<c:choose>
