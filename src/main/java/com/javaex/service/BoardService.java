@@ -18,6 +18,7 @@ public class BoardService {
 	private BoardDao boardDao;
 
 	/* 게시판 정보 가져오는 서비스 */
+	@Transactional
 	public Map<String, Object> getBoardList(int page, String kwd) {
 		//페이지당 보여지는 글의 갯수
 		int listCnt = 10;

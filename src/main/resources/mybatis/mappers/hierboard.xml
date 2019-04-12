@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hierboard">
+	
+	<!-- 쿼리문 작성 -->
+	
+	<!-- 페이지 갯수에 따른 리스트를 불러오는 sql -->
+	<select id="selectList" parameterType="map" resultType="HierBoardVo">
+		<![CDATA[
+			SELECT no, title, name, hit, reg_date, user_no, depth, state
+			FROM    (SELECT  ROWNUM as rn,
+             				 X.*
+    				 FROM    (SELECT  b.no as no, 
+                     				  b.title as title, 
+                     				  u.name as name, 
+                       				  b.hit as hit, 
+                     				  TO_CHAR(b.reg_date, 'YYYY-MM-DD') as reg_date, 
+                     				  b.user_no as user_no, 
+                     				  b.depth as depth, 
+                     				  b.state as state
+            				  FROM rboard b JOIN users u
+                				ON b.user_no = u.no
+            				  WHERE UPPER(title) LIKE '%' || NVL(UPPER(#{kwd}), '') || '%'
+            				  ORDER BY b.group_no DESC, b.order_no ASC) X)
+			WHERE rn BETWEEN #{start} AND #{end}
+		]]>
+	</select>
+	
+	<!-- 해당 키워드에 대한 전체 글 갯수를 가져오는 sql -->
+	<select id="selectCount" resultType="int" parameterType="String">
+		<![CDATA[
+			SELECT count(*)
+			FROM   rboard
+			WHERE  UPPER(title) LIKE '%' || NVL(UPPER(#{kwd}), '') || '%'
+		]]>
+	</select>
+	
+	<!-- 리스트에서 로그인 유저가 일반적으로 글 쓰는 sql -->
+	<insert id="insertBoard" parameterType="HierBoardVo">
+		<![CDATA[
+			INSERT INTO rboard( no,
+                    			user_no,
+                    			title,
+                    			content,
+                    			group_no )
+			VALUES (            
+                    			seq_rboard_no.nextval,
+                    			#{user_no},
+                    			#{title},
+                    			#{content},
+                    			seq_rboard_no.currval )
+		]]>
+	</insert>
+	
+	<!-- 하나의 글 정보를 읽어오는 sql -->
+	<select id="selectBoard" parameterType="int" resultType="HierBoardVo">
+		<![CDATA[
+			SELECT   title, 
+					 content, 
+					 user_no, 
+					 no, 
+					 group_no,
+					 order_no,
+					 depth 
+			FROM     rboard 
+			WHERE    no = #{no}
+		]]>
+	</select>
+	
+	<!-- no에 해당하는 글의 조회수를 1 증가시키는 sql -->
+	<update id="updateHit" parameterType="int">
+		<![CDATA[
+			UPDATE 	 rboard 
+			SET 	 hit = hit + 1 
+			WHERE 	 no = #{no}
+		]]>
+	</update>
+	
+	<!-- 해당그룹의 order_no를 증가시켜 새로운 reply의 들어갈 자리를 만들어준다 -->
+	<update id="updateOrderNo" parameterType="map">
+		<![CDATA[
+			UPDATE   rboard
+			SET 	 order_no = order_no + 1	 
+			WHERE 	 group_no = #{group}
+				AND  order_no >= #{order}
+		]]>
+	</update>
+	
+	<!-- (user_no, title, content, group_no, order_no, depth) -->
+	<!-- 위의 정보들을 가지고 reply를 insert해준다. -->
+	<insert id="insertReply" parameterType="HierBoardVo">
+		<![CDATA[
+			INSERT INTO rboard( no,
+                    			user_no,
+                    			title,
+                    			content,
+                    			group_no,
+                    			order_no,
+                    			depth )
+			VALUES (            
+                    			seq_rboard_no.nextval,
+                    			#{user_no},
+                    			#{title},
+                    			#{content},
+                    			#{group_no}, 
+                    			#{order_no},
+                    			#{depth} )
+		]]>
+	</insert>
+	
+	<!-- 가지고온 vo로 글의 정보를 수정하는 sql -->
+	<update id="updateBoard" parameterType="HierBoardVo">
+		<![CDATA[
+			UPDATE   rboard
+			SET 	 title = #{title},
+    				 content = #{content}
+			WHERE 	 no = #{no}
+		]]>
+	</update>
+	
+	
+	<update id="updateState" parameterType="int">
+		<![CDATA[
+			UPDATE   rboard
+			SET 	 state = 1
+			WHERE 	 no = #{no}
+		]]>
+	</update>
+	
+</mapper>

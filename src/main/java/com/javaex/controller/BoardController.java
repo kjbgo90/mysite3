@@ -25,7 +25,7 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
-	
+
 	@RequestMapping(value = {"", "/list"}, method = RequestMethod.GET)
 	public String boardList(Model model,
 							@RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -100,7 +100,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/deletec/{no}", method = RequestMethod.GET)
-	public String deleteControll(@PathVariable("no") int no,
+	public String deleteController(@PathVariable("no") int no,
 						 @RequestParam("user_no") int write_no, 
 						 HttpSession session) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -110,7 +110,7 @@ public class BoardController {
 			int result = boardService.deleteCon(no);
 			
 			if(result == 1)
-				return "redirect:/board?page=1";
+				return "redirect:/board?page=1&kwd=";
 			else
 				return "redirect:/main";
 		}
@@ -133,6 +133,7 @@ public class BoardController {
 		else
 			return "redirect:/main";
 	}
+	
 	/*
 	@RequestMapping(value = "/board/board" , method = RequestMethod.GET)
 	public String insert1000() {

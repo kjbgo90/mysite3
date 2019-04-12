@@ -22,11 +22,14 @@
 				<div id="board">
 					<h2>게시판-등록</h2>
 					
-					<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/write">
-						<input type="hidden" name="user_no" value="${authUser.no}">
+					<form class="board-form" method="post" action="${pageContext.request.contextPath }/hierboard/reply">
+						<input type="hidden" name="no" value="${param.no }">
+						<input type="hidden" name="user_no" value="${authUser.no }">
+						<input type="hidden" name="page" value="${param.page }">
+						<input type="hidden" name="kwd" value="${param.kwd }">
 						<table class="tbl-ex">
 							<tr>
-								<th colspan="2">글쓰기</th>
+								<th colspan="2">댓글쓰기</th>
 							</tr>
 							<tr>
 								<td class="label">제목</td>
@@ -40,7 +43,7 @@
 							</tr>
 						</table>
 						<div class="bottom">
-							<a href="${pageContext.request.contextPath }/board?page=1&kwd=">취소</a>
+							<a href="${pageContext.request.contextPath }/hierboard?page=1&kwd=">취소</a>
 							<input type="submit" value="등록">
 						</div>
 					</form>	

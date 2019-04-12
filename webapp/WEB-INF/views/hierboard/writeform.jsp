@@ -22,7 +22,7 @@
 				<div id="board">
 					<h2>게시판-등록</h2>
 					
-					<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/write">
+					<form class="board-form" method="post" action="${pageContext.request.contextPath }/hierboard/write">
 						<input type="hidden" name="user_no" value="${authUser.no}">
 						<table class="tbl-ex">
 							<tr>
@@ -40,7 +40,7 @@
 							</tr>
 						</table>
 						<div class="bottom">
-							<a href="${pageContext.request.contextPath }/board?page=1&kwd=">취소</a>
+							<a href="${pageContext.request.contextPath }/hierboard?page=1&kwd=">취소</a>
 							<input type="submit" value="등록">
 						</div>
 					</form>	
