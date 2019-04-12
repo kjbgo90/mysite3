@@ -24,6 +24,8 @@
 					
 					<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/modify">
 						<input type="hidden" name="no" value="${modiVo.no }">
+						<input type="hidden" name="page" value="${param.page }">
+						<input type="hidden" name="kwd" value="${param.kwd }">
 						<table class="tbl-ex">
 							<tr>
 								<th colspan="2">글수정</th>
@@ -41,7 +43,7 @@
 						</table>
 				
 						<div class="bottom">
-							<a href="${pageContext.request.contextPath }/board/read/${modiVo.no }">취소</a>
+							<a href="${pageContext.request.contextPath }/board/read/${modiVo.no }?page=${param.page}&kwd=${param.kwd}">취소</a>
 							<input type="submit" value="수정">
 						</div>
 					</form>	

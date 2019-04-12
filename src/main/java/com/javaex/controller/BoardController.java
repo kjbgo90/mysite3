@@ -1,5 +1,7 @@
 package com.javaex.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -79,14 +81,17 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public String modify(@ModelAttribute BoardVo vo) {
+	public String modify(@ModelAttribute BoardVo vo,
+						 @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+						 @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd) throws UnsupportedEncodingException {
 		System.out.println("modify 실행");
 		
+		kwd = URLEncoder.encode(kwd, "UTF-8");
 		int result = boardService.modify(vo);
 		
 		if(result == 1) {
 			System.out.println("modify 성공!");
-			return "redirect:/board/read/" + vo.getNo();
+			return "redirect:/board/read/" + vo.getNo() + "?page=" + page + "&kwd=" + kwd;
 		}
 		else {
 			System.out.println("modify 실패..");
@@ -128,10 +133,11 @@ public class BoardController {
 		else
 			return "redirect:/main";
 	}
-	
+	/*
 	@RequestMapping(value = "/board/board" , method = RequestMethod.GET)
 	public String insert1000() {
 		boardService.insert1000();
 		return "redirect:/main";
 	}
+	*/
 }
