@@ -34,4 +34,9 @@ public class UserDao {
 	public int updateUser(UserVo vo) {
 		return sqlSession.update("user.update", vo);
 	}
+	
+	/* 회원정보 가져오기(email) */
+	public UserVo selectEmail(String email) {
+		return sqlSession.selectOne("user.selectByEmail", email);
+	}
 }

@@ -35,4 +35,14 @@ public class UserService {
 		else 
 			return null;
 	}
+	
+	/* 이메일 체크 */
+	public boolean emailCheck(String email) {
+		UserVo vo = userDao.selectEmail(email);
+		//데이터가 없으면 true --> 가입할 수 있음
+		if(vo == null)
+			return true;
+		else 
+			return false;
+	}
 }

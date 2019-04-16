@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,18 @@ public class GuestBookDao {
 	public int delete(GuestBookVo vo) {
 		int result = sqlsession.delete("guestbook.deleteGuest", vo);
 		return result;
+	}
+
+	public GuestBookVo selectRecent() {
+		return sqlsession.selectOne("guestbook.selectOne");
+	}
+
+	public List<GuestBookVo> getListByPage(int start, int end) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		return sqlsession.selectList("guestbook.selectListByPage", map);
 	}
 	
 }

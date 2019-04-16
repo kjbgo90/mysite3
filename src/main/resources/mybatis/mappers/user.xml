@@ -35,6 +35,17 @@
 		]]>
 	</select>
 	
+	<select id="selectByEmail" parameterType="String" resultType="UserVo">
+		<![CDATA[
+			SELECT  no,
+        			name,
+        			email,
+        			gender
+			FROM users
+			WHERE   email = #{email}
+		]]>
+	</select>
+	
 	<update id="update" parameterType="UserVo">
 		<![CDATA[
 			UPDATE users 

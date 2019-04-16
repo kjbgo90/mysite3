@@ -16,6 +16,34 @@
 		]]>
 	</select>
 	
+	<select id="selectListByPage" parameterType="map" resultType="GuestBookVo">
+		<![CDATA[
+			SELECT no, name, password, content, reg_date
+			FROM    (SELECT rownum as rn, X.*
+         			 FROM       (SELECT 	 NO,
+                                 			 NAME,
+                                 			 PASSWORD,
+                                 			 CONTENT,
+                                 			 TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') as REG_DATE 
+                     			 FROM	 GUESTBOOK
+                     			 ORDER BY NO DESC) X)
+			WHERE rn BETWEEN #{start} and #{end}
+		]]>
+	</select>
+	
+	<select id="selectOne" resultType="GuestBookVo">
+		<![CDATA[
+			SELECT 	 NO,
+					 NAME,
+					 PASSWORD,
+					 CONTENT,
+					 TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') as REG_DATE 
+			FROM	 GUESTBOOK
+            WHERE    NO = (SELECT max(no) 
+                           FROM   guestbook)
+		]]>
+	</select>
+	
 	<insert id="insertGuest" parameterType="GuestBookVo">
 		<![CDATA[
 			INSERT INTO GUESTBOOK(

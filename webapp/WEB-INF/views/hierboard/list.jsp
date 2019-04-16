@@ -47,7 +47,7 @@
 									</td>
 								</c:when>
 								<c:otherwise>
-									<td style="text-align:right;">
+									<td style="text-align:right; color:red;" >
 										<a><strong>삭제된 글입니다.</strong></a>
 									</td>
 								</c:otherwise>
@@ -57,7 +57,7 @@
 							<td>${vo.hit }</td>
 							<td>${vo.reg_date }</td>
 							<c:choose>
-								<c:when test="${vo.user_no eq authUser.no}">
+								<c:when test="${(vo.user_no eq authUser.no) and (vo.state eq 0)}">
 									<td>
 										<a href="${pageContext.request.contextPath }/hierboard/delete/${vo.no}?user_no=${vo.user_no}&page=${param.page}&kwd=${param.kwd}" class="del">삭제</a>
 									</td>
