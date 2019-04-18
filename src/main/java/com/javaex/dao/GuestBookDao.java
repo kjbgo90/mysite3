@@ -31,8 +31,8 @@ public class GuestBookDao {
 		return result;
 	}
 
-	public GuestBookVo selectRecent() {
-		return sqlsession.selectOne("guestbook.selectOne");
+	public GuestBookVo selectRecent(int no) {
+		return sqlsession.selectOne("guestbook.selectOne", no);
 	}
 
 	public List<GuestBookVo> getListByPage(int start, int end) {

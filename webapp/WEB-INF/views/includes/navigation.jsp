@@ -8,5 +8,6 @@
 		<li><a href="${pageContext.request.contextPath }/board?page=1&kwd=">게시판</a></li>
 		<li><a href="${pageContext.request.contextPath }/hierboard?page=1&kwd=">계층 게시판</a></li>
 		<li><a href="${pageContext.request.contextPath }/guestbook/ajaxlist">ajax방명록</a></li>
+		<li><a href="${pageContext.request.contextPath }/gallery">갤러리</a></li>
 	</ul>
 </div>

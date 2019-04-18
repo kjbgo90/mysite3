@@ -7,6 +7,7 @@
     	<typeAlias alias="BoardVo" type="com.javaex.vo.BoardVo" />
     	<typeAlias alias="HierBoardVo" type="com.javaex.vo.HierBoardVo" />
     	<typeAlias alias="UserVo" type="com.javaex.vo.UserVo" />
+    	<typeAlias alias="FileVo" type="com.javaex.vo.FileVo" />
     </typeAliases>
 
     <mappers>
@@ -14,5 +15,6 @@
         <mapper resource="mybatis/mappers/board.xml" />
         <mapper resource="mybatis/mappers/user.xml" />
         <mapper resource="mybatis/mappers/hierboard.xml" />
+        <mapper resource="mybatis/mappers/gallery.xml" />
     </mappers>
 </configuration>

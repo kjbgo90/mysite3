@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.javaex.dao.GuestBookDao;
 import com.javaex.vo.GuestBookVo;
@@ -27,10 +26,9 @@ public class GuestBookService {
 		return guestbookDao.insert(vo);
 	}
 
-	@Transactional
 	public GuestBookVo insertGuest(GuestBookVo vo) {
 		guestbookDao.insert(vo);
-		return guestbookDao.selectRecent();
+		return guestbookDao.selectRecent(vo.getNo());
 	}
 
 	public List<GuestBookVo> getList(int page, int delCnt, int insertCnt) {

@@ -31,7 +31,7 @@
 		]]>
 	</select>
 	
-	<select id="selectOne" resultType="GuestBookVo">
+	<select id="selectOne" resultType="GuestBookVo" parameterType="int">
 		<![CDATA[
 			SELECT 	 NO,
 					 NAME,
@@ -39,12 +39,14 @@
 					 CONTENT,
 					 TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') as REG_DATE 
 			FROM	 GUESTBOOK
-            WHERE    NO = (SELECT max(no) 
-                           FROM   guestbook)
+            WHERE    NO = #{no}
 		]]>
 	</select>
 	
 	<insert id="insertGuest" parameterType="GuestBookVo">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT seq_guestbook_no.nextval FROM dual
+		</selectKey>
 		<![CDATA[
 			INSERT INTO GUESTBOOK(
 									NO,
@@ -53,7 +55,7 @@
 									CONTENT, 
 									REG_DATE) 
 			VALUES ( 
-									seq_guestbook_no.nextval,
+									#{no},
 									#{name}, 
 									#{password}, 
 									#{content}, 
