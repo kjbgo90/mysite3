@@ -8,6 +8,12 @@
 
 	<properties>
 		<org.springframework-version>4.3.3.RELEASE</org.springframework-version>
+
+		<!-- Jenkins -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- /Jenkins -->
+
 	</properties>
 
 	<dependencies>
@@ -96,6 +102,52 @@
 		</repository>
 	</repositories>
 
+	<!-- Jenkins -->
+	<profiles>
+		<profile>
+			<id>production</id>
+			<build>
+
+				<resources>
+					<resource>
+						<directory>${project.basedir}/src/main/resources</directory>
+						<excludes>
+							<exclude>**/*.java</exclude>
+						</excludes>
+					</resource>
+				</resources>
+
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.7</version>
+						<configuration>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+			<dependencies>
+				<!-- Servlet -->
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>javax.servlet-api</artifactId>
+					<version>3.0.1</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>javax.servlet.jsp</groupId>
+					<artifactId>jsp-api</artifactId>
+					<version>2.0</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	<!-- /Jenkins -->
+
 	<build>
 		<plugins>
 			<plugin>
@@ -113,6 +165,21 @@
 					<warSourceDirectory>webapp</warSourceDirectory>
 				</configuration>
 			</plugin>
+
+			<!-- Jenkins -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<url>http://192.168.1.39:8088/manager/text</url>
+					<path>/mysite3</path>
+					<username>admin</username>
+					<password>manager</password>
+				</configuration>
+			</plugin>
+			<!-- /Jenkins -->
+
 		</plugins>
 	</build>
 </project>
