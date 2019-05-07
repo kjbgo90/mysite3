@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
 	xmlns:mvc="http://www.springframework.org/schema/mvc">
+
 
 	<!-- annotation 설정을 하겠다. -->
 	<context:annotation-config />
@@ -35,6 +36,12 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
+		
+		<!-- argument resolver -->
+		<mvc:argument-resolvers>
+			<bean class="com.javaex.interceptor.AuthUserHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
+
 	</mvc:annotation-driven>
 
 	<!-- 멀티파트 리졸버 -->
@@ -52,6 +59,28 @@
 	</bean>
 
 	<!-- url매핑 -->
-	<mvc:resources mapping="/upload/**" location="file:/Users/bong/Desktop/bitStudy/upload/" />
+	<mvc:resources mapping="/upload/**" location="file:/upload/" />
+
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/login" />
+			<bean class="com.javaex.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout" />
+			<bean class="com.javaex.interceptor.LogoutInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/user/login" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<mvc:exclude-mapping path="/assets/**" />
+			<bean class="com.javaex.interceptor.AuthInterceptor" />
+		</mvc:interceptor>
+
+	</mvc:interceptors>
 
 </beans>

@@ -48,19 +48,22 @@
 	margin: 0px 10px 10px 0px;
 }
 
-#delPop .modal-body{
+#viewPop .modal-body{
 	text-align: left;
 }
 
-#delPop #comment {
+#viewPop #comment {
 	width: 100%;
 }
 
 
-#delPop #file {
+#viewPop #file {
 	width: 100%;
 }
 
+#viewPop img {
+	max-width: 100%;
+}
 
 .formgroup {
 	margin: 0px 20px 20px 20px;

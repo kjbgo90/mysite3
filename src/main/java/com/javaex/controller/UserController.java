@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.javaex.interceptor.Auth;
 import com.javaex.service.UserService;
 import com.javaex.vo.UserVo;
 
@@ -46,7 +47,7 @@ public class UserController {
 		System.out.println("loginform 호출");
 		return "user/loginform";
 	}
-	
+	/*
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestParam("email") String email, 
 						@RequestParam("password") String password,
@@ -71,7 +72,9 @@ public class UserController {
 		
 		return "redirect:/main";
 	}
+	*/
 	
+	@Auth
 	@RequestMapping(value = "/modifyform", method = RequestMethod.GET)
 	public String modifyform(HttpSession session,
 							 Model model) {

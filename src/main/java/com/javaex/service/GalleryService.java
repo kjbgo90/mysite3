@@ -25,7 +25,7 @@ public class GalleryService {
 	}
 
 	public FileVo insertImg(MultipartFile file, FileVo fileVo) {
-		String saveDir = "/Users/bong/Desktop/bitStudy/upload";
+		String saveDir = "/upload";
 		
 		//오리지널 파일명
 		String orgName = file.getOriginalFilename();

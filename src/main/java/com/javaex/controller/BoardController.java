@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.javaex.interceptor.Auth;
+import com.javaex.interceptor.AuthUser;
 import com.javaex.service.BoardService;
 import com.javaex.vo.BoardVo;
 import com.javaex.vo.UserVo;
@@ -37,6 +39,7 @@ public class BoardController {
 		return "board/list";
 	}
 	
+	@Auth
 	@RequestMapping(value = "/writeform", method = RequestMethod.GET)
 	public String writeForm() {
 		System.out.println("writeform 호출");
@@ -70,14 +73,21 @@ public class BoardController {
 		return "board/read";
 	}
 	
+	@Auth
 	@RequestMapping(value = "/modifyform/{no}", method = RequestMethod.GET)
 	public String modifyform(@PathVariable("no") int no,
-			 				 Model model) {
+			 				 Model model,
+			 				 @AuthUser UserVo userVo) {
 		System.out.println("modifyform 호출");
 		
 		BoardVo vo = boardService.modiGet(no);
-		model.addAttribute("modiVo", vo);		
-		return "board/modifyform";
+		
+		if(userVo.getNo() == vo.getUser_no()) {
+			model.addAttribute("modiVo", vo);
+			return "board/modifyform";
+		}
+		else
+			return "redirect:/board?page=1";
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
