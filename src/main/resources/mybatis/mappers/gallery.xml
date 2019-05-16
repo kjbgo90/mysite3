@@ -9,7 +9,7 @@
 			SELECT no,
 				   user_no,
 				   comments,
-				   saveName
+				   filePath
 			FROM gallery
 			ORDER BY no ASC
 		]]>
@@ -44,7 +44,7 @@
 			SELECT no,
 				   user_no,
 				   comments,
-				   saveName
+				   filePath
 			FROM gallery
 			WHERE no = #{no}
 		]]>

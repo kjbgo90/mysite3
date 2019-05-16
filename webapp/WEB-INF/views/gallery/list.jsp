@@ -35,7 +35,7 @@
 						<c:forEach items="${list}" var="vo">
 							<li class="view" data-no="${vo.no }">
 								<div>
-									<img src ="${pageContext.request.contextPath }/upload/${vo.saveName }">
+									<img src ="${vo.filePath }">
 								</div>
 							</li>
 						</c:forEach>
@@ -148,7 +148,7 @@
 				$("[name=del_no]").val("");
 				$("[name=del_user_no]").val("");
 				
-				$("#imgDraw").html("<img src ='${pageContext.request.contextPath }/upload/" + fileVo.saveName + "'>");
+				$("#imgDraw").html("<img src =" + fileVo.filePath + ">");
 				$("#commWrite").html("<label>코멘트</label><br>" + fileVo.comments);
 				$("[name=del_no]").val(fileVo.no);
 				$("[name=del_user_no]").val(fileVo.user_no);
@@ -219,7 +219,7 @@
 		
 		str += "<li class='view' data-no=" + vo.no + ">"
 		str += "	<div>";
-		str += "		<img src ='${pageContext.request.contextPath }/upload/" + vo.saveName + "'>";
+		str += "		<img src =" + vo.filePath + ">";
 		str += "	</div>";
 		str += "</li>";
 		

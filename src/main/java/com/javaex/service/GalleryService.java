@@ -1,9 +1,5 @@
 package com.javaex.service;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.javaex.dao.GalleryDao;
+import com.javaex.util.S3Util;
 import com.javaex.vo.FileVo;
 
 @Service
@@ -19,13 +16,17 @@ public class GalleryService {
 	
 	@Autowired
 	private GalleryDao galleryDao;
+	
+	@Autowired
+	private S3Util s3util;
 
 	public List<FileVo> getList() {
 		return galleryDao.selectList();
 	}
 
 	public FileVo insertImg(MultipartFile file, FileVo fileVo) {
-		String saveDir = "/upload";
+		String path = "gallery";
+		String bucketName = "com.javaex.kjbbb.upload";
 		
 		//오리지널 파일명
 		String orgName = file.getOriginalFilename();
@@ -37,7 +38,7 @@ public class GalleryService {
 		String saveName = System.currentTimeMillis() + UUID.randomUUID().toString() + exName;
 
 		//파일패스
-		String filePath = saveDir + "/" + saveName;
+		String filePath = s3util.getFileURL(bucketName, path, saveName);
 
 		//파일사이즈
 		long fileSize = file.getSize();
@@ -47,21 +48,9 @@ public class GalleryService {
 		fileVo.setFilePath(filePath);
 		fileVo.setFileSize(fileSize);
 		
-		//서버에 파일 복사
-		try {
-			byte[] fileData = file.getBytes();
-			OutputStream out = new FileOutputStream(saveDir + "/" + saveName);
-			BufferedOutputStream bout = new BufferedOutputStream(out);
-					
-			bout.write(fileData);
-					
-			if(bout != null) {
-				bout.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	
+		//aws s3에 파일 저장 
+		s3util.fileUpload(bucketName + "/" + path, file, saveName);
+
 		//데이터베이스에 파일 저장
 		galleryDao.insertImg(fileVo);
 		
