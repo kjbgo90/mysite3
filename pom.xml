@@ -182,8 +182,6 @@
 				<configuration>
 					<url>http://13.209.35.129:80/manager/text</url>
 					<path>/mysite3</path>
-					<username>admin</username>
-					<password>manager</password>
 				</configuration>
 			</plugin>
 			<!-- /Jenkins -->
