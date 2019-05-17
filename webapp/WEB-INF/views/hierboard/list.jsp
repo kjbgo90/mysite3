@@ -43,7 +43,7 @@
 							<c:choose>
 								<c:when test="${vo.state eq 0 }">
 									<td style="text-align:left;">
-										<a href="${pageContext.request.contextPath }/hierboard/read/${vo.no }?page=${param.page}&kwd=${param.kwd}"><c:forEach var ="i" begin="0" end="${vo.depth }">&nbsp;&nbsp;</c:forEach><c:if test="${vo.depth ne 0 }"><img src="/assets/images/reply.png"></c:if>${vo.title }</a>
+										<a href="${pageContext.request.contextPath }/hierboard/read/${vo.no }?page=${param.page}&kwd=${param.kwd}"><c:forEach var ="i" begin="0" end="${vo.depth }">&nbsp;&nbsp;</c:forEach><c:if test="${vo.depth ne 0 }"><img src="${pageContext.request.contextPath }/assets/images/reply.png"></c:if>${vo.title }</a>
 									</td>
 								</c:when>
 								<c:otherwise>
